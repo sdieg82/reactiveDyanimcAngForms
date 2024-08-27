@@ -6,14 +6,8 @@ const routes: Routes = [
   {
     path:'',
     children:[
-      {
-        path:'sign-up',
-        component:RegisterPageComponent
-      },
-      {
-        path:'**',
-        redirectTo:'sign-up'
-      },
+      { path:'sign-up', component:RegisterPageComponent },
+      { path:'**', redirectTo:'sign-up'},
 
     ]
   }
