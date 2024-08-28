@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // import * as customValidators from '../../../shared/validators/validators';
 import { ValidatorService } from '../../../shared/service/validators.service';
+import { EmailValidatorService } from '../../../shared/validators/email.validator.service';
 
 @Component({
   selector: 'app-register-page',
@@ -14,15 +15,22 @@ export class RegisterPageComponent {
   
   constructor(
     private fb:FormBuilder,
-    private validatorService:ValidatorService
+    private validatorService:ValidatorService,
+    private email:EmailValidatorService
   ){
     this.myForm=this.fb.group({
       name:['',[Validators.required,Validators.pattern(this.validatorService.firstNameAndLastnamePattern )]],
-      email:['',[Validators.required, Validators.pattern(this.validatorService.emailPattern) ]],
+      email: ['', [ Validators.required, Validators.pattern( this.validatorService.emailPattern )], [ this.email ]],
       username:['',[Validators.required,this.validatorService.cantBeStrider]],
       password:['',[Validators.required,Validators.minLength(6)]],
       password2:['',[Validators.required]],
-    })
+    }
+    ,{
+      validators:[
+        this.validatorService.isFieldOneEqualTwo('password','password2')
+      ]
+    }
+  )
 
    
     
@@ -35,6 +43,7 @@ export class RegisterPageComponent {
 
   onSubmit():void{
     this.myForm.markAllAsTouched();
+    console.log(this.myForm.value)
     
   }
 
